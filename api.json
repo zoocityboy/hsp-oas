@@ -941,7 +941,7 @@
                         "$ref": "#/components/responses/ErrorNotFoundResponse"
                     }
                 },
-                "operationId": "getRewardByID",
+                "operationId": "getUserRewardByID",
                 "summary": "Get reward detail",
                 "description": "Get Reward by ID"
             },
