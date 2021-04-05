@@ -14,7 +14,7 @@ info:
   x-logo:
     url: 'https://yt3.ggpht.com/ytc/AAUvwngLVwk-ooDAsYiOzkz23G3_25F64nktxRWuoLBL=s176-c-k-c0x00ffffff-no-rj'
 servers:
-  - url: 'https://stoplight.io/mocks/printeastwoodcz/openapi/75539/'
+  - url: 'https://stoplight.io/mocks/printeastwoodcz/openapi/75539'
     description: hsp
 paths:
   /auth/logout:
@@ -638,7 +638,7 @@ paths:
         '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
       security: []
-      operationId: getRewardByID
+      operationId: getUserRewardByID
       summary: Get reward detail
       description: Get Reward by ID
     parameters:
