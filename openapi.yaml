@@ -1,65 +1,65 @@
----
 openapi: 3.0.2
 info:
   title: Hradec si Pomaha
   version: 1.0.0
   description: Hradec si pomaha API specification
-  termsOfService: http://hradecsipomaha.cz/terms/
+  termsOfService: 'http://hradecsipomaha.cz/terms/'
   contact:
     name: Lukas Svoboda
-    url: http://backapps.cloud
+    url: 'http://backapps.cloud'
     email: zoocityboy@gmail.com
   license:
     name: GNU AGPLv3
-    url: https://www.gnu.org/licenses/agpl.txt
+    url: 'https://www.gnu.org/licenses/agpl.txt'
   x-logo:
-    url: https://yt3.ggpht.com/ytc/AAUvwngLVwk-ooDAsYiOzkz23G3_25F64nktxRWuoLBL=s176-c-k-c0x00ffffff-no-rj
+    url: 'https://yt3.ggpht.com/ytc/AAUvwngLVwk-ooDAsYiOzkz23G3_25F64nktxRWuoLBL=s176-c-k-c0x00ffffff-no-rj'
 servers:
-- url: http://localhost/
+  - url: 'https://stoplight.io/mocks/printeastwoodcz/openapi/75539/'
+    description: hsp
 paths:
   /auth/logout:
     get:
+      description: Logout
       tags:
-      - Auth
+        - Auth
       responses:
+        '200':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/ErrorBadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ErrorUnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ErrorUnauthorizedResponse'
         default:
           description: successful operation
-        "200":
-          $ref: '#/components/responses/NoContentResponse'
-        "400":
-          $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: getLogoutUser
       summary: Logout current user
-  /user/{id}:
+  '/user/{id}':
     get:
       tags:
-      - User
+        - User
       parameters:
-      - examples:
-          id:
-            value: '"13ad6c4e-7298-11eb-9439-0242ac130002"'
-        name: id
-        description: 'The user id that needs to be fetched. Use user1 for testing. '
-        schema:
-          type: string
-        in: path
-        required: true
+        - examples:
+            id:
+              value: '"13ad6c4e-7298-11eb-9439-0242ac130002"'
+          name: id
+          description: 'The user id that needs to be fetched. Use user1 for testing. '
+          schema:
+            type: string
+          in: path
+          required: true
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/UserResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorNotFoundResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
+        '404':
           description: User not found
       operationId: getUserById
       summary: Get user by user id
@@ -72,104 +72,106 @@ paths:
               $ref: '#/components/schemas/UpdateUserRequest'
         required: true
       tags:
-      - User
+        - User
       parameters:
-      - name: id
-        description: name that need to be updated
-        schema:
-          type: string
-        in: path
-        required: true
+        - name: id
+          description: name that need to be updated
+          schema:
+            type: string
+          in: path
+          required: true
       responses:
-        "202":
+        '202':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: putUser
       summary: Updated user with ID
       description: This can only be done by the logged in user.
     delete:
       tags:
-      - User
+        - User
       parameters:
-      - name: id
-        description: The name that needs to be deleted
-        schema:
-          type: string
-        in: path
-        required: true
+        - name: id
+          description: The name that needs to be deleted
+          schema:
+            type: string
+          in: path
+          required: true
       responses:
-        "202":
+        '202':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           description: Invalid username supplied
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: deleteUser
       summary: Delete user
       description: This can only be done by the logged in user.
     parameters:
-    - name: id
-      schema:
-        type: string
-      in: path
-      required: true
-  /company:
-    
-    get:
-      tags:
-      - Company
-      parameters:
-      - $ref: '#/components/parameters/offsetParam'
-      - $ref: '#/components/parameters/limitParam'
-      - name: categories
-        description: |
-          List of category ids
-        schema:
-          type: array
-          items:
-            type: string
-        in: query
-        required: false
-      - name: query
-        description: Fulltext query
+      - name: id
         schema:
           type: string
-        in: query
-      - name: private
-        description: Private - list only events created by current user
-        schema:
-          type: boolean
-        in: query
-        required: false
-      - name: liked
-        description: List only liked by current logged user
-        schema:
-          type: boolean
-        in: query
+        in: path
+        required: true
+  /company:
+    description: ''
+    get:
+      tags:
+        - Company
+      parameters:
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+        - name: categories
+          description: |
+            List of category ids
+          schema:
+            type: array
+            items:
+              type: string
+          in: query
+          required: false
+        - name: query
+          description: Fulltext query
+          schema:
+            type: string
+          in: query
+        - name: my
+          description: Private - list only events created by current user
+          schema:
+            type: boolean
+          in: query
+          required: false
+        - name: liked
+          description: List only liked by current logged user
+          schema:
+            type: boolean
+          in: query
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/CompanyListResponse'
-        "204":
+        '204':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
       operationId: getCompanyList
       summary: Company list
-      description: "List of companies.\nYou can use filters \n- categories by ids\n\
-        - district by ids\n- query: fulltext search"
+      description: |-
+        List of companies.
+        You can use filters 
+        - categories by ids
+        - district by ids
+        - query: fulltext search
     post:
       requestBody:
         content:
@@ -178,49 +180,55 @@ paths:
               $ref: '#/components/schemas/CompanyDto'
         required: true
       tags:
-      - Company
+        - Company
       responses:
-        "201":
+        '201':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: postCompany
       summary: Create company
+      description: post company
   /event:
     get:
       tags:
-      - Event
+        - Event
       parameters:
-      - name: private
-        description: All or logged user events only
-        schema:
-          type: boolean
-        in: query
-        required: false
-        
-      - name: liked
-        description: List events liked by current user
-        schema:
-          type: boolean
-        in: query
-      - $ref: '#/components/parameters/offsetParam'
-      - $ref: '#/components/parameters/limitParam'
-      - name: query
-        description: fulltext search
-        schema:
-          type: string
-        in: query
+        - name: my
+          description: All or logged user events only
+          schema:
+            type: boolean
+          in: query
+          required: false
+        - name: liked
+          description: List events liked by current user
+          schema:
+            type: boolean
+          in: query
+        - $ref: '#/components/parameters/offsetParam'
+        - $ref: '#/components/parameters/limitParam'
+        - name: query
+          description: fulltext search
+          schema:
+            type: string
+          in: query
       responses:
-        "204":
-          $ref: '#/components/responses/NoContentResponse'
-        "400":
-          $ref: '#/components/responses/NoContentResponse'
-        "200":
+        '200':
           $ref: '#/components/responses/EventsResponse'
+        '204':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/ErrorBadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ErrorUnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+        '404':
+          $ref: '#/components/responses/ErrorNotFoundResponse'
       operationId: getEventList
       summary: Event list
+      description: Get Event list
     post:
       requestBody:
         content:
@@ -229,91 +237,92 @@ paths:
               $ref: '#/components/schemas/EventDto'
         required: true
       tags:
-      - Event
+        - Event
       responses:
-        "201":
+        '201':
           $ref: '#/components/responses/EventsResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: postEvent
       summary: Event create
-  /event/{id}:
+      description: Event create
+  '/event/{id}':
     get:
       tags:
-      - Event
+        - Event
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/EventResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
       operationId: getEventById
       summary: Get event by ID
+      description: Get event by ID
     parameters:
-    - examples:
-        id:
-          value: '"some text"'
-      name: id
-      description: |
-        Event UUID
-      schema:
-        type: string
-      in: path
-      required: true
-  /company/{id}:
+      - examples:
+          id:
+            value: '"some text"'
+        name: id
+        description: |
+          Event UUID
+        schema:
+          type: string
+        in: path
+        required: true
+  '/company/{id}':
     get:
       tags:
-      - Company
+        - Company
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CompanyDto'
           description: Get company detail
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "404":
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: getCompanyById
       summary: Company detail
+      description: Company detail
     parameters:
-    - name: id
-      description: UUID of Company
-      schema:
-        type: string
-      in: path
-      required: true
+      - name: id
+        description: UUID of Company
+        schema:
+          type: string
+        in: path
+        required: true
   /user/settings:
     get:
       tags:
-      - User relations
+        - User relations
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/SettingsResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: getUserSettings
       summary: Get user settings by user ID
+      description: Settings
     put:
       requestBody:
         content:
@@ -322,69 +331,75 @@ paths:
               $ref: '#/components/schemas/SettingsDto'
         required: true
       tags:
-      - User relations
+        - User relations
       responses:
-        "202":
+        '202':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           description: Wrogn request
-        "401":
+        '401':
           description: User is not authorized
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: putUserSettings
       summary: Update user settings
-  /reward/{id}:
+      description: Update user settings
+  '/reward/{id}':
     summary: Path used to manage a single Reward.
-    description: "The REST endpoint/path used to get, update, and delete single instances\
-      \ of an `Reward`.  This path contains `GET`, `PUT`, and `DELETE` operations\
-      \ used to perform the get, update, and delete tasks, respectively."
+    description: 'The REST endpoint/path used to get, update, and delete single instances of an `Reward`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.'
     get:
       tags:
-      - Rewards
+        - Rewards
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/RewardsResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "404":
+        '401':
+          $ref: '#/components/responses/ErrorUnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
+        '500':
+          description: Internal Server Error
       operationId: getRewardById
       summary: Get a Reward by ID
       description: Gets the details of a single instance of a `Reward`.
     parameters:
-    - name: id
-      description: A unique identifier for a `Reward`.
-      schema:
-        type: string
-      in: path
-      required: true
+      - name: id
+        description: A unique identifier for a `Reward`.
+        schema:
+          type: string
+        in: path
+        required: true
   /reward:
     summary: Path used to manage the list of rewards.
-    description: "The REST endpoint/path used to list and create zero or more `Reward`\
-      \ entities.  This path contains a `GET` and `POST` operation to perform the\
-      \ list and create tasks, respectively."
+    description: 'The REST endpoint/path used to list and create zero or more `Reward` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.'
     get:
       tags:
-      - Rewards
+        - Rewards
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/RewardsResponse'
-        "204":
+        '204':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ErrorUnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
       operationId: getRewardList
       summary: Get List of Rewards
       description: Gets a list of all `Reward` entities.
   /category:
     get:
       tags:
-      - Event
+        - Event
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -392,12 +407,13 @@ paths:
                 items:
                   $ref: '#/components/schemas/CategoryDto'
           description: Returns list of categories
-        "204":
+        '204':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
       operationId: getCategoryList
       summary: Category list
+      description: Category list
   /feedback:
     summary: Feedback from user
     post:
@@ -408,228 +424,230 @@ paths:
               $ref: '#/components/schemas/FeedbackRequest'
         required: true
       tags:
-      - User
+        - User
       responses:
-        "201":
+        '201':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-      security:
-      - bearerAuth: []
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+      security: []
       operationId: postFeedback
       summary: Users feedback
-  /company/{id}/like:
+      description: Users feedback
+  '/company/{id}/like':
     post:
       tags:
-      - Company
+        - Company
       responses:
-        "201":
+        '201':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: postLikeCompany
       summary: Company add Like
+      description: Company add Like
     delete:
       tags:
-      - Company
+        - Company
       responses:
-        "202":
+        '202':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: deleteLikeCompany
       summary: Company dislike
+      description: Company dislike
     parameters:
-    - name: id
-      description: Company UUID
-      schema:
-        type: string
-      in: path
-      required: true
-  /event/{id}/like:
-    post:
-      tags:
-      - Event
-      responses:
-        "201":
-          $ref: '#/components/responses/NoContentResponse'
-        "400":
-          $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
-          $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
-      operationId: postLikeEvent
-      summary: Like Event
-    delete:
-      tags:
-      - Event
-      responses:
-        "202":
-          $ref: '#/components/responses/NoContentResponse'
-        "400":
-          $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
-          $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
-      operationId: deleteLikeEvent
-      summary: Dislike Event
-    parameters:
-    - name: id
-      description: Event UUID
-      schema:
-        type: string
-      in: path
-      required: true
-  /category/{id}:
-    get:
-      tags:
-      - Event
-      parameters:
       - name: id
+        description: Company UUID
         schema:
           type: string
         in: path
         required: true
+  '/event/{id}/like':
+    post:
+      tags:
+        - Event
       responses:
-        "200":
+        '201':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/ErrorBadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ErrorUnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+        '404':
+          $ref: '#/components/responses/ErrorNotFoundResponse'
+      security: []
+      operationId: postLikeEvent
+      summary: Like Event
+      description: Like Event
+    delete:
+      tags:
+        - Event
+      responses:
+        '202':
+          $ref: '#/components/responses/NoContentResponse'
+        '400':
+          $ref: '#/components/responses/ErrorBadRequestResponse'
+        '401':
+          $ref: '#/components/responses/ErrorUnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ErrorUnauthorizedResponse'
+        '404':
+          $ref: '#/components/responses/ErrorNotFoundResponse'
+      security: []
+      operationId: deleteLikeEvent
+      summary: Dislike Event
+      description: Dislike Event
+    parameters:
+      - name: id
+        description: Event UUID
+        schema:
+          type: string
+        in: path
+        required: true
+  '/category/{id}':
+    get:
+      tags:
+        - Event
+      parameters:
+        - name: id
+          schema:
+            type: string
+          in: path
+          required: true
+      responses:
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CategoryDto'
           description: Get Category
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "404":
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
       operationId: getCategoryById
       summary: Category detail
+      description: Category detail
     parameters:
-    - name: id
-      schema:
-        type: string
-      in: path
-      required: true
-  /event/{id}/notifications:
+      - name: id
+        schema:
+          type: string
+        in: path
+        required: true
+  '/event/{id}/notifications':
     summary: Get list of event Notifications
     get:
       tags:
-      - Event
+        - Event
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/EventNotificationListResponse'
-        "204":
+        '204':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "404":
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
       operationId: getEventNotificationListById
       summary: List of Event notification
+      description: List of Event notification
     parameters:
-    - name: id
-      schema:
-        type: string
-      in: path
-      required: true
-  /user/reward/{id}/use:
+      - name: id
+        schema:
+          type: string
+        in: path
+        required: true
+  '/user/reward/{id}/use':
     post:
       tags:
-      - Rewards
+        - Rewards
       responses:
-        "201":
+        '201':
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: postReward
       summary: User reward
+      description: User reward
     parameters:
-    - name: id
-      description: Reward UUID
-      schema:
-        type: string
-      in: path
-      required: true
+      - name: id
+        description: Reward UUID
+        schema:
+          type: string
+        in: path
+        required: true
   /user/reward:
     get:
       tags:
-      - Rewards
+        - Rewards
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/RewardsResponse'
-        "400":
-          description: Invalid username supplied
-        "401":
+        '400':
+          $ref: '#/components/responses/ErrorBadRequestResponse'
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-      security:
-      - bearerAuth: []
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+      security: []
       operationId: getUserRewardList
       summary: Get user rewards by user ID
       description: Get all available rewards for current user
-  /user/reward/{id}:
+  '/user/reward/{id}':
     get:
       tags:
-      - Rewards
+        - Rewards
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/RewardResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "404":
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+        '404':
           $ref: '#/components/responses/ErrorNotFoundResponse'
-      security:
-      - bearerAuth: []
+      security: []
       operationId: getRewardByID
       summary: Get reward detail
+      description: Get Reward by ID
     parameters:
-    - name: id
-      schema:
-        type: string
-      in: path
-      required: true
+      - name: id
+        schema:
+          type: string
+        in: path
+        required: true
+        description: id of reward
   /qr:
     post:
       requestBody:
@@ -639,20 +657,22 @@ paths:
               $ref: '#/components/schemas/QrRequest'
         required: true
       tags:
-      - Rewards
+        - Rewards
       responses:
-        "202":
+        '202':
           $ref: '#/components/responses/QrResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "401":
+        '401':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
-        "403":
-          $ref: '#/components/responses/ErrorUnauthorizedResponse'
-      security:
-      - bearerAuth: []
+        '403':
+          $ref: '#/components/responses/ErrorForbidenResponse'
+        '500':
+          description: Internal Server Error
+      security: []
       operationId: postQr
       summary: Use data from QR
+      description: Use data from QR
   /auth/signin:
     summary: Sign In user
     post:
@@ -663,16 +683,17 @@ paths:
               $ref: '#/components/schemas/AuthenticationRequest'
         required: true
       tags:
-      - Auth
+        - Auth
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/AuthResponse'
-        "400":
+        '400':
           description: Invalid username/password supplied
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
       operationId: postSignInUser
       summary: Logs user into the system
+      description: Sign in user
   /auth/signup:
     summary: Sign up user
     post:
@@ -683,46 +704,50 @@ paths:
               $ref: '#/components/schemas/UserDto'
         required: true
       tags:
-      - Auth
+        - Auth
       responses:
-        "200":
+        '200':
           $ref: '#/components/responses/AuthResponse'
-        "400":
+        '400':
           $ref: '#/components/responses/ErrorBadRequestResponse'
-        "403":
+        '403':
           $ref: '#/components/responses/ErrorUnauthorizedResponse'
       operationId: postSignUpUser
       summary: Logs user into the system
+      description: Logs user into the system
 components:
   schemas:
     AuthenticationRequest:
       description: Login request
-      required:
-      - username
-      - password
       type: object
       properties:
         username:
-          
           type: string
+          description: ''
+          format: email
+          example: user@mail.com
         password:
-          
           type: string
-    AuthResponse:
+          description: ''
+          format: password
       required:
-      - token
-      - user
+        - username
+        - password
+    AuthResponse:
+      description: ''
+      required:
+        - token
+        - user
       type: object
       properties:
         token:
           $ref: '#/components/schemas/TokenDto'
-          
         user:
           $ref: '#/components/schemas/UserDto'
-          
     FeedbackRequest:
+      description: ''
       required:
-      - message
+        - message
       type: object
       properties:
         message:
@@ -731,52 +756,73 @@ components:
         username:
           description: Optional username
           type: string
+      x-examples:
+        example-1:
+          message: string
+          username: string
     UpdateUserRequest:
       description: Model for update user informations
       required:
-      - firstName
-      - username
-      - lastName
+        - firstName
+        - username
+        - lastName
       type: object
       properties:
         username:
-          
+          description: ''
           type: string
         firstName:
-          
+          description: ''
           type: string
         lastName:
-          
+          description: ''
           type: string
       example:
         username: some text
         firstName: some text
         lastName: some text
     QrRequest:
-      required:
-      - companyId
+      description: ''
       type: object
       properties:
         companyId:
-          
           type: string
-    QrResponse:
+          description: ''
+          format: uuid
       required:
-      - points
+        - companyId
+      x-examples:
+        example-1:
+          companyId: 8bb73d03-06b4-47c7-80c7-59301f770eda
+    QrResponse:
+      description: ''
+      required:
+        - points
       type: object
       properties:
         points:
-          
+          description: ''
           type: number
+      x-examples:
+        example-1:
+          points: 0
     ApiErrorDto:
       description: Default error response
-      required:
-      - code
       type: object
+      example:
+        code: 400
+        message: Invalid format
+        invalid:
+          - field: email
+            message: wrong format
       properties:
         code:
-          description: Error status code
           type: integer
+          description: Error status code
+          minimum: 200
+          format: int32
+          default: 400
+          example: 400
         message:
           description: Error description message
           type: string
@@ -785,70 +831,50 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InvalidFieldDto'
-      example:
-        code: 400
-        message: Invalida params
-        invalid:
-        - field: "email"
-          message: "Wrong format"
-    BaseObjectDto:
-      discriminator:
-        propertyName: base_type
-      description: Abstract model for all models in project
       required:
-      - base_type
-      - createdAt
-      type: object
-      properties:
-        base_type:
-          type: string
-        createdAt:
-          format: date-time
-          description: Date when was object created
-          type: string
-        updatedAt:
-          format: date-time
-          description: Last date when was object updated
-          type: string
-      example:
-        createdAt: 2018-02-10T09:30Z
-        updatedAt: 2018-02-10T09:30Z
+        - code
     UserStatusDto:
+      description: ''
       enum:
-      - active
-      - blocked
+        - active
+        - blocked
       type: string
-      example: '"blocked"'
+      example: blocked
+      x-examples:
+        example-1: blocked
     UserDto:
       description: User object
-      type: object
       allOf:
-      - required:
-        - id
-        - role
-        - password
-        - email
-        - status
-        type: object
-        properties:
-          id:
-            nullable: false
-            type: string
-          role:
-            $ref: '#/components/schemas/RoleDto'
-          firstName:
-            type: string
-          lastName:
-            type: string
-          email:
-            type: string
-          password:
-            type: string
-          status:
-            $ref: '#/components/schemas/UserStatusDto'
-          username:
-            type: string
-      - $ref: '#/components/schemas/BaseObjectDto'
+        - type: object
+          properties:
+            id:
+              type: string
+              nullable: false
+              format: uuid
+            role:
+              $ref: '#/components/schemas/RoleDto'
+            firstName:
+              type: string
+            lastName:
+              type: string
+            email:
+              type: string
+              format: email
+              example: user@mail.com
+            password:
+              type: string
+              format: password
+            status:
+              $ref: '#/components/schemas/UserStatusDto'
+            username:
+              type: string
+          required:
+            - id
+            - role
+            - email
+            - password
+            - status
+        - $ref: '#/components/schemas/BaseObjectDto'
       example:
         id: c85f8ecf-227f-418d-a867-7e0140dc51fe
         email: sample@example.cz
@@ -858,45 +884,71 @@ components:
         password: $password1
         status: active
         username: johnSnow
+      x-examples:
+        example-1:
+          id: c85f8ecf-227f-418d-a867-7e0140dc51fe
+          email: sample@example.cz
+          fistName: Jan
+          lastName: Novak
+          role: user
+          password: $password1
+          status: active
+          username: johnSnow
     TokenDto:
       description: Refresh token Response Model
       required:
-      - accessToken
-      - refreshToken
+        - accessToken
+        - refreshToken
       type: object
       properties:
         accessToken:
-          
+          description: ''
           type: string
         refreshToken:
-          
+          description: ''
           type: string
       example:
         accessToken: c85f8ecf-227f-418d-a867-7e0140dc51fe
         refreshToken: 0bc5f3263a5eb4390242ac130002
+      x-examples:
+        example-1:
+          accessToken: c85f8ecf-227f-418d-a867-7e0140dc51fe
+          refreshToken: 0bc5f3263a5eb4390242ac130002
     SettingsDto:
+      description: ''
       type: object
       properties:
         eventCategories:
-          
+          description: ''
           type: array
           items:
             $ref: '#/components/schemas/CategoryDto'
         companyCategories:
-          
           type: array
           items:
             $ref: '#/components/schemas/CategoryDto'
         eventDistrict:
-          
           type: array
           items:
             $ref: '#/components/schemas/DistrictDto'
         companyDistrict:
-          
           type: array
           items:
             $ref: '#/components/schemas/DistrictDto'
+      x-examples:
+        example-1:
+          eventCategories:
+            - id: 0bc5f326-73a5-11eb-9439-0242ac130002
+              name: Category 1
+          companyCategories:
+            - id: 0bc5f326-73a5-11eb-9439-0242ac130002
+              name: Category 1
+          eventDistrict:
+            - id: 0bc5f326-73a5-11eb-9439-0242ac130002
+              name: Dubina 1
+          companyDistrict:
+            - id: 0bc5f326-73a5-11eb-9439-0242ac130002
+              name: Dubina 1
     RoleDto:
       description: |
         User role:
@@ -904,398 +956,462 @@ components:
           * `user` - registered user after sign up
           * `company` - account with Company role
       enum:
-      - anonymous
-      - user
-      - client
+        - anonymous
+        - user
+        - client
       type: string
+      x-examples:
+        example-1: anonymous
     RewardListDto:
       description: List of Rewards with Paggination
-      type: object
       allOf:
-      - required:
-        - items
-        type: object
-        properties:
-          items:
-            
-            type: array
+        - type: object
+          properties:
             items:
-              $ref: '#/components/schemas/RewardDto'
-      - $ref: '#/components/schemas/PagginateDto'
+              description: ''
+              type: array
+              items:
+                $ref: '#/components/schemas/RewardDto'
+          required:
+            - items
+        - $ref: '#/components/schemas/PagginateDto'
+      x-examples:
+        example-1:
+          items:
+            - id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+              title: string
+              description: string
+              preview:
+                type: youtube
+                original: 'http://www.opensource.com'
+              event: {}
+              company: {}
+              voucherCount: 0
+              createdAt: '2021-04-04T21:08:46Z'
+              updatedAt: '2021-04-04T21:08:46Z'
+          page: 1
+          limit: 10
+          total: 10
     RewardDto:
       description: User rewards
-      type: object
       allOf:
-      - required:
-        - id
-        - title
-        - description
-        - voucherCount
-        type: object
-        properties:
-          id:
-            
-            type: string
-          title:
-            description: title
-            type: string
-          description:
-            description: Description of reward
-            type: string
+        - type: object
+          properties:
+            id:
+              type: string
+              description: ''
+              format: uuid
+            title:
+              description: title
+              type: string
+            description:
+              description: Description of reward
+              type: string
+            preview:
+              $ref: '#/components/schemas/MediaDto'
+            event:
+              $ref: '#/components/schemas/EventDto'
+            company:
+              $ref: '#/components/schemas/CompanyDto'
+            voucherCount:
+              description: ''
+              type: integer
+          required:
+            - id
+            - title
+            - description
+            - voucherCount
+        - $ref: '#/components/schemas/BaseObjectDto'
+      x-examples:
+        example-1:
+          id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+          title: string
+          description: string
           preview:
-            $ref: '#/components/schemas/MediaDto'
-          event:
-            $ref: '#/components/schemas/EventDto'
-          company:
-            $ref: '#/components/schemas/CompanyDto'
-          voucherCount:
-            
-            type: integer
-      - $ref: '#/components/schemas/BaseObjectDto'
+            type: youtube
+            original: 'http://www.opensource.com'
+          event: {}
+          company: {}
+          voucherCount: 0
+          createdAt: '2021-04-04T21:08:46Z'
+          updatedAt: '2021-04-04T21:08:46Z'
     PagginateDto:
       discriminator:
         propertyName: pagginate_type
       description: basic paggination object
-      required:
-      - pagginate_type
-      - page
-      - limit
-      - total
       type: object
-      properties:
-        pagginate_type:
-          type: string
-        page:
-          description: current page
-          type: integer
-        limit:
-          description: How many items will fetch
-          type: integer
-        total:
-          description: Total count of items available with this query
-          type: integer
       example:
-        page: 74
-        limit: 55
-        total: 72
+        page: 1
+        limit: 10
+        total: 10
+      x-examples:
+        example-1:
+          page: 1
+          limit: 10
+          total: 10
+      properties:
+        page:
+          type: integer
+          description: current page
+          format: int32
+          example: 1
+        limit:
+          type: integer
+          description: How many items will fetch
+          format: int32
+          example: 20
+          minimum: 1
+          maximum: 100
+        total:
+          type: integer
+          description: Total count of items available with this query
+          format: int32
+          example: 10
+      required:
+        - page
+        - limit
+        - total
     NotificationListDto:
-      type: object
+      description: ''
       allOf:
-      - required:
-        - items
-        type: object
-        properties:
-          items:
-            
-            type: array
+        - type: object
+          properties:
             items:
-              $ref: '#/components/schemas/NotificationDto'
-      - $ref: '#/components/schemas/PagginateDto'
+              description: ''
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationDto'
+          required:
+            - items
+        - $ref: '#/components/schemas/PagginateDto'
+      x-examples:
+        example-1:
+          items:
+            - title: string
+              description: string
+              id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+              createdAt: '2021-04-04T21:08:46Z'
+              updatedAt: '2021-04-04T21:08:46Z'
+          page: 1
+          limit: 10
+          total: 10
     NotificationDto:
-      type: object
+      description: ''
       allOf:
-      - required:
-        - title
-        type: object
-        properties:
-          title:
-            
-            type: string
-          description:
-            
-            type: string
-      - $ref: '#/components/schemas/BaseObjectDto'
+        - type: object
+          properties:
+            title:
+              description: ''
+              type: string
+            description:
+              description: ''
+              type: string
+            id:
+              type: string
+              format: uuid
+          required:
+            - title
+            - id
+        - $ref: '#/components/schemas/BaseObjectDto'
+      x-examples:
+        example-1:
+          title: string
+          description: string
+          id: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+          createdAt: '2021-04-04T21:08:46Z'
+          updatedAt: '2021-04-04T21:08:46Z'
     MediaTypeDto:
+      description: ''
       enum:
-      - image
-      - youtube
+        - image
+        - youtube
       type: string
-      example: '"youtube"'
+      example: youtube
+      x-examples:
+        example-1: youtube
     MediaListDto:
-      type: object
+      description: ''
       allOf:
-      - required:
-        - items
-        type: object
-        properties:
-          items:
-            description: items
-            type: array
+        - type: object
+          properties:
             items:
-              $ref: '#/components/schemas/MediaDto'
-      - $ref: '#/components/schemas/PagginateDto'
+              description: items
+              type: array
+              items:
+                $ref: '#/components/schemas/MediaDto'
+          required:
+            - items
+        - $ref: '#/components/schemas/PagginateDto'
+      x-examples:
+        example-1:
+          items:
+            - type: youtube
+              original: 'http://www.opensource.com'
+          page: 1
+          limit: 10
+          total: 10
     MediaDto:
-      type: object
       allOf:
-      - required:
-        - type
-        type: object
-        properties:
-          id: 
-            type: string
-            
-          original:
-            type: string
-          small:
-            type: string
-          medium:
-            type: string
-          large:
-            type: string
-          type:
-            $ref: '#/components/schemas/MediaTypeDto'
-            
-      - $ref: '#/components/schemas/BaseObjectDto'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 1f4b3853-1d84-43f4-8124-9a3ab2429dbd
+            original:
+              type: string
+            small:
+              type: string
+            medium:
+              type: string
+            large:
+              type: string
+            type:
+              $ref: '#/components/schemas/MediaTypeDto'
+          required:
+            - type
+        - $ref: '#/components/schemas/BaseObjectDto'
       xml:
         name: Media
       example:
         type: youtube
-        original: http://www.opensource.com
+        original: 'http://www.opensource.com'
+      x-examples: {}
     LocationDto:
       description: Basic location
-      type: object
       allOf:
-      - required:
-        - lat
-        - lon
-        - address
-        - district
-        type: object
-        properties:
-          lat:
-            type: number
-          lon:
-            type: number
-          address:
-            type: string
-          district:
-            $ref: '#/components/schemas/DistrictDto'
-      - $ref: '#/components/schemas/BaseObjectDto'
+        - type: object
+          properties:
+            lat:
+              type: number
+              description: ''
+              format: double
+              example: 50.209431
+            lon:
+              type: number
+              description: ''
+              format: double
+              example: 15.83263
+            address:
+              description: ''
+              type: string
+            district:
+              $ref: '#/components/schemas/DistrictDto'
+            id:
+              type: string
+              format: uuid
+          required:
+            - lat
+            - lon
+            - address
+            - district
+        - $ref: '#/components/schemas/BaseObjectDto'
       example:
-        address: "Sample addres, hradec kralove, kosmonautu"
+        address: 'Sample addres, hradec kralove, kosmonautu'
         district:
           id: 0bc5f326-73a5-11eb-9439-0242ac130002
           name: District 1
         lat: 50.2
         lon: 14.5
+      x-examples:
+        example-1:
+          address: 'Sample addres, hradec kralove, kosmonautu'
+          district:
+            id: 0bc5f326-73a5-11eb-9439-0242ac130002
+            name: District 1
+          lat: 50.2
+          lon: 14.5
     InvalidFieldDto:
+      description: ''
       required:
-      - field
+        - field
       type: object
       properties:
         field:
+          description: ''
           type: string
         message:
           description: Error message for invalid field
           type: string
       example:
-        field: "email"
-        message: "wrong email format"
+        field: some text
+        message: some text
     EventListDto:
-      type: object
+      description: ''
       allOf:
-      - required:
-        - items
-        type: object
-        properties:
-          items:
-            type: array
+        - type: object
+          properties:
             items:
-              $ref: '#/components/schemas/EventDto'
-      - $ref: '#/components/schemas/PagginateDto'
-      example: {
-        items: []
-      }
+              description: ''
+              type: array
+              items:
+                $ref: '#/components/schemas/EventDto'
+          required:
+            - items
+        - $ref: '#/components/schemas/PagginateDto'
+      example: {}
+      x-examples: {}
     EventDto:
-      type: object
       allOf:
-      - required:
-        - endAt
-        - startAt
-        - categories
-        - name
-        type: object
-        properties:
-          id:
-            nullable: false
-            description: |
-              Unique ID
-            type: string
-          description:
-            type: string
-          startAt:
-            format: date-time
-            type: string
-          endAt:
-            format: date-time
-            type: string
-          categories:
-            description: Event categories
-            type: array
-            items:
-              $ref: '#/components/schemas/CategoryDto'
-          preview:
-            $ref: '#/components/schemas/MediaDto'
-          gallery:
-            type: array
-            items:
+        - type: object
+          properties:
+            id:
+              type: string
+              nullable: false
+              description: |
+                Unique ID
+              format: uuid
+              example: 89466c31-4676-4fa7-853e-f65d16e7eb8c
+            description:
+              type: string
+            startAt:
+              format: date-time
+              type: string
+            endAt:
+              format: date-time
+              type: string
+            categories:
+              description: Event categories
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryDto'
+            preview:
               $ref: '#/components/schemas/MediaDto'
-          location:
-            $ref: '#/components/schemas/LocationDto'
-          name:
-            type: string
-          liked:
-            type: boolean
-      - $ref: '#/components/schemas/BaseObjectDto'
+            gallery:
+              type: array
+              items:
+                $ref: '#/components/schemas/MediaDto'
+            location:
+              $ref: '#/components/schemas/LocationDto'
+            name:
+              type: string
+            liked:
+              description: ''
+              type: boolean
+          required:
+            - startAt
+            - endAt
+            - categories
+            - name
+        - $ref: '#/components/schemas/BaseObjectDto'
       xml:
         name: Event
-      example: 
-        id: 0bc5f326-73a5-11eb-9439-0242ac130002
-        name: Event name
-        description: Description
-        liked: false
-        startAt: "2018-02-10T09:30Z"
-        endAt: "2018-02-10T09:30Z"
-        categories: 
-          [{ "createdAt": "2018-02-10T09:30Z", "updatedAt": "2018-02-10T09:30Z", "id": "0bc5f326-73a5-11eb-9439-0242ac130002", "name": "Category 1" }]
-        
-        preview: 
-          id: 0bc5f326-73a5-11eb-9439-0242ac130002
-          createdAt: '2018-02-10T09:30Z'
-          updatedAt: '2018-02-10T09:30Z'
-          type: youtube
-          original: 'http://www.opensource.com'
-        gallery: [
-          { "createdAt": "2018-02-10T09:30Z", "updatedAt": "2018-02-10T09:30Z", "type": "youtube", "original": "http://www.opensource.com" },
-          { "createdAt": "2018-02-10T09:30Z", "updatedAt": "2018-02-10T09:30Z", "type": "youtube", "original": "http://www.opensource.com" }
-          ]
-        location: 
-          { "createdAt": "2018-02-10T09:30Z", "updatedAt": "2018-02-10T09:30Z", "address": "Sample addres, hradec kralove, kosmonautu", "district": { "id": "0bc5f326-73a5-11eb-9439-0242ac130002", "name": "District 1" }, "lat": 50.2, "lon": 14.5 }
-                 
+      example: {}
+      x-examples: {}
     DistrictDto:
-      type: object
+      description: ''
       allOf:
-      - required:
-        - name
-        - id
-        type: object
-        properties:
-          id:
-            
-            type: string
-          name:
-            
-            type: string
-      - $ref: '#/components/schemas/BaseObjectDto'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: ''
+              format: uuid
+              example: 89466c31-4676-4fa7-853e-f65d16e7eb8c
+            name:
+              description: ''
+              type: string
+          required:
+            - id
+            - name
+        - $ref: '#/components/schemas/BaseObjectDto'
       example:
         id: 0bc5f326-73a5-11eb-9439-0242ac130002
         name: Dubina 1
-    ContactDto:
-      description: Basic contact
-      type: object
-      allOf:
-      - required:
-        - location
-        type: object
-        properties:
-          siteUrl:
-            description: http://...
-            type: string
-          phone:
-            format: int64
-            description: Phone number
-            type: integer
-          email:
-            description: E-mail address
-            type: string
-          location:
-            $ref: '#/components/schemas/LocationDto'
-      - $ref: '#/components/schemas/BaseObjectDto'
-      example: {
-        "descriptoin": "Basic contact",
-        "phone": 777888999,
-        "email": "example@email.com"
-      }
     CompanyListDto:
-      type: object
+      description: ''
       allOf:
-      - required:
-        - items
-        type: object
-        properties:
-          items:
-            
-            type: array
+        - type: object
+          properties:
             items:
-              $ref: '#/components/schemas/CompanyDto'
-      - $ref: '#/components/schemas/PagginateDto'
+              description: ''
+              type: array
+              items:
+                $ref: '#/components/schemas/CompanyDto'
+          required:
+            - items
+        - $ref: '#/components/schemas/PagginateDto'
     CompanyDto:
-      type: object
       allOf:
-      - required:
-        - id
-        - location
-        - categories
-        type: object
-        properties:
-          id:
-            nullable: false
-            type: string
-          name:
-            nullable: true
-            type: string
-          location:
-            $ref: '#/components/schemas/LocationDto'
-            
-          categories:
-            
-            type: array
-            items:
-              $ref: '#/components/schemas/CategoryDto'
-          logo:
-            $ref: '#/components/schemas/MediaDto'
-            
-          gallery:
-            
-            type: array
-            items:
+        - $ref: '#/components/schemas/BaseObjectDto'
+        - type: object
+          properties:
+            id:
+              type: string
+              nullable: false
+              format: uuid
+              example: 89466c31-4676-4fa7-853e-f65d16e7eb8c
+            name:
+              nullable: true
+              type: string
+            location:
+              $ref: '#/components/schemas/LocationDto'
+            categories:
+              description: ''
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryDto'
+            logo:
               $ref: '#/components/schemas/MediaDto'
-          liked:
-            
-            type: boolean
-      - $ref: '#/components/schemas/BaseObjectDto'
+            gallery:
+              description: ''
+              type: array
+              items:
+                $ref: '#/components/schemas/MediaDto'
+            liked:
+              description: ''
+              type: boolean
+          required:
+            - id
+            - location
+            - categories
       xml:
         name: Company
-      example: {
-        "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
-        "name": "Company name",
-        "categories": [],
-        "gallery": [],
-        "base_type": "",
-        
-      }
+      example: {}
     CategoryDto:
       description: Category
-      type: object
       allOf:
-      - required:
-        - id
-        - name
-        type: object
-        properties:
-          id:
-            nullable: false
-            type: string
-          name:
-            nullable: false
-            type: string
-      - $ref: '#/components/schemas/BaseObjectDto'
+        - $ref: '#/components/schemas/BaseObjectDto'
+        - type: object
+          properties:
+            id:
+              type: string
+              nullable: false
+              format: uuid
+              example: 89466c31-4676-4fa7-853e-f65d16e7eb8c
+            name:
+              nullable: false
+              type: string
+          required:
+            - id
+            - name
       xml:
         name: Category
-      example: { 
-        id: "0bc5f326-73a5-11eb-9439-0242ac130002",
-        name: "Category 1"
-      }
+      example:
+        id: 0bc5f326-73a5-11eb-9439-0242ac130002
+        name: Category 1
+    BaseObjectDto:
+      discriminator:
+        propertyName: base_type
+      description: Abstract model for all models in project
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Date when was object created
+          format: date-time
+          example: '2021-04-04T21:08:46Z'
+        updatedAt:
+          type: string
+          description: Last date when was object updated
+          format: date-time
+          example: '2021-04-04T21:08:46Z'
+      required:
+        - createdAt
+      x-examples:
+        example-1:
+          createdAt: '2021-04-04T21:08:46Z'
+          updatedAt: '2021-04-04T21:08:46Z'
   responses:
     EventsResponse:
       content:
@@ -1310,11 +1426,12 @@ components:
             $ref: '#/components/schemas/RewardListDto'
       description: List of Rewards
     ErrorUnauthorizedResponse:
-      description: ""
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiErrorDto'
+      description: Unauthorized
+      headers: {}
     ErrorBadRequestResponse:
       content:
         application/json:
@@ -1322,11 +1439,11 @@ components:
             $ref: '#/components/schemas/ApiErrorDto'
       description: Bad request
     ErrorNotFoundResponse:
-      description: ""
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiErrorDto'
+      description: Not Found
     NoContentResponse:
       description: Response with no content
     UserResponse:
@@ -1342,11 +1459,11 @@ components:
             $ref: '#/components/schemas/EventDto'
       description: Event response
     EventRequest:
-      description: ""
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EventDto'
+      description: ''
     AuthResponse:
       content:
         application/json:
@@ -1358,19 +1475,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MediaListDto'
-      description: ""
+      description: ''
     EventNotificationListResponse:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/NotificationListDto'
-      description: ""
+      description: ''
     RewardResponse:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RewardDto'
-      description: ""
+      description: ''
     SettingsResponse:
       content:
         application/json:
@@ -1382,20 +1499,26 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/QrResponse'
-      description: ""
+      description: ''
     CompanyListResponse:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CompanyListDto'
       description: List of companies
+    ErrorForbidenResponse:
+      description: Error Forbiden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiErrorDto'
   parameters:
     offsetParam:
       name: offset
       description: Number of items to skip before returning the results.
       schema:
         format: int32
-        default: 1
+        default: 0
         minimum: 0
         type: integer
       in: query
@@ -1410,34 +1533,34 @@ components:
         minimum: 1
         type: integer
       in: query
-      required: false
   securitySchemes:
-    bearerAuth:
-      scheme: bearer
-      bearerFormat: JWT
+    bearer:
       type: http
+      scheme: bearer
 security:
-- bearerAuth: []
+  - bearerAuth: []
 tags:
-- name: Event
-  description: Everything about your Events
-  externalDocs:
-    description: Find out more
-    url: http://swagger.io
-- name: Company
-  description: Everything about Company
-  externalDocs:
-    description: Find out more
-    url: http://swagger.io
-- name: User
-  description: Operations about user
-  externalDocs:
-    description: Find out more about our store
-    url: http://swagger.io
-- name: User relations
-  description: Operations about user relations
-  externalDocs:
-    description: Find out more about our store
-    url: http://swagger.io
-- name: Rewards
-  description: Rewards operations
+  - name: Event
+    description: Everything about your Events
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: Company
+    description: Everything about Company
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: User
+    description: Operations about user
+    externalDocs:
+      description: Find out more about our store
+      url: 'http://swagger.io'
+  - name: User relations
+    description: Operations about user relations
+    externalDocs:
+      description: Find out more about our store
+      url: 'http://swagger.io'
+  - name: Rewards
+    description: Rewards operations
+  - name: Auth
+    description: Auth operations
