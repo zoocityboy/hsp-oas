@@ -1,0 +1,2345 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Hradec si Pomaha",
+        "version": "1.0.0",
+        "description": "Hradec si pomaha API specification",
+        "termsOfService": "http://hradecsipomaha.cz/terms/",
+        "contact": {
+            "name": "Lukas Svoboda",
+            "url": "http://backapps.cloud",
+            "email": "zoocityboy@gmail.com"
+        },
+        "license": {
+            "name": "GNU AGPLv3",
+            "url": "https://www.gnu.org/licenses/agpl.txt"
+        },
+        "x-logo": {
+            "url": "https://yt3.ggpht.com/ytc/AAUvwngLVwk-ooDAsYiOzkz23G3_25F64nktxRWuoLBL=s176-c-k-c0x00ffffff-no-rj"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://stoplight.io/mocks/printeastwoodcz/openapi/75539",
+            "description": "hsp"
+        }
+    ],
+    "paths": {
+        "/auth/logout": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    },
+                    "200": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    }
+                },
+                "operationId": "getLogoutUser",
+                "summary": "Logout current user",
+                "description": "Logout"
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "examples": {
+                            "id": {
+                                "value": "\"13ad6c4e-7298-11eb-9439-0242ac130002\""
+                            }
+                        },
+                        "name": "id",
+                        "description": "The user id that needs to be fetched. Use user1 for testing. ",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/UserResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "operationId": "getUserById",
+                "summary": "Get user by user id",
+                "description": "Get user info by ID"
+            },
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "name that need to be updated",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "putUser",
+                "summary": "Updated user with ID",
+                "description": "This can only be done by the logged in user."
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "The name that needs to be deleted",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "description": "Invalid username supplied"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    }
+                },
+                "operationId": "deleteUser",
+                "summary": "Delete user",
+                "description": "This can only be done by the logged in user."
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/company": {
+            "description": "",
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/offsetParam"
+                    },
+                    {
+                        "$ref": "#/components/parameters/limitParam"
+                    },
+                    {
+                        "name": "categories",
+                        "description": "List of category ids\n",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "query",
+                        "description": "Fulltext query",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query"
+                    },
+                    {
+                        "name": "my",
+                        "description": "Private - list only events created by current user",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "liked",
+                        "description": "List only liked by current logged user",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CompanyListResponse"
+                    },
+                    "204": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    }
+                },
+                "operationId": "getCompanyList",
+                "summary": "Company list",
+                "description": "List of companies.\nYou can use filters \n- categories by ids\n- district by ids\n- query: fulltext search"
+            },
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompanyDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "Company"
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    }
+                },
+                "operationId": "postCompany",
+                "summary": "Create company",
+                "description": "post company"
+            }
+        },
+        "/event": {
+            "get": {
+                "tags": [
+                    "Event"
+                ],
+                "parameters": [
+                    {
+                        "name": "my",
+                        "description": "All or logged user events only",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "liked",
+                        "description": "List events liked by current user",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "query"
+                    },
+                    {
+                        "$ref": "#/components/parameters/offsetParam"
+                    },
+                    {
+                        "$ref": "#/components/parameters/limitParam"
+                    },
+                    {
+                        "name": "query",
+                        "description": "fulltext search",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/EventsResponse"
+                    },
+                    "204": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "getEventList",
+                "summary": "Event list",
+                "description": "Get Event list"
+            },
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EventDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "Event"
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/EventsResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    }
+                },
+                "operationId": "postEvent",
+                "summary": "Event create",
+                "description": "Event create"
+            }
+        },
+        "/event/{id}": {
+            "get": {
+                "tags": [
+                    "Event"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/EventResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "getEventById",
+                "summary": "Get event by ID",
+                "description": "Get event by ID"
+            },
+            "parameters": [
+                {
+                    "examples": {
+                        "id": {
+                            "value": "\"some text\""
+                        }
+                    },
+                    "name": "id",
+                    "description": "Event UUID\n",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/company/{id}": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompanyDto"
+                                }
+                            }
+                        },
+                        "description": "Get company detail"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "getCompanyById",
+                "summary": "Company detail",
+                "description": "Company detail"
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "description": "UUID of Company",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/user/settings": {
+            "get": {
+                "tags": [
+                    "User relations"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/SettingsResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "getUserSettings",
+                "summary": "Get user settings by user ID",
+                "description": "Settings"
+            },
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SettingsDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "User relations"
+                ],
+                "responses": {
+                    "202": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "description": "Wrogn request"
+                    },
+                    "401": {
+                        "description": "User is not authorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    }
+                },
+                "operationId": "putUserSettings",
+                "summary": "Update user settings",
+                "description": "Update user settings"
+            }
+        },
+        "/reward/{id}": {
+            "summary": "Path used to manage a single Reward.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Reward`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "Rewards"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/RewardsResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "operationId": "getRewardById",
+                "summary": "Get a Reward by ID",
+                "description": "Gets the details of a single instance of a `Reward`."
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "description": "A unique identifier for a `Reward`.",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/reward": {
+            "summary": "Path used to manage the list of rewards.",
+            "description": "The REST endpoint/path used to list and create zero or more `Reward` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "Rewards"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/RewardsResponse"
+                    },
+                    "204": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    }
+                },
+                "operationId": "getRewardList",
+                "summary": "Get List of Rewards",
+                "description": "Gets a list of all `Reward` entities."
+            }
+        },
+        "/category": {
+            "get": {
+                "tags": [
+                    "Event"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryDto"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Returns list of categories"
+                    },
+                    "204": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    }
+                },
+                "operationId": "getCategoryList",
+                "summary": "Category list",
+                "description": "Category list"
+            }
+        },
+        "/feedback": {
+            "summary": "Feedback from user",
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FeedbackRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "User"
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    }
+                },
+                "operationId": "postFeedback",
+                "summary": "Users feedback",
+                "description": "Users feedback"
+            }
+        },
+        "/company/{id}/like": {
+            "post": {
+                "tags": [
+                    "Company"
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "postLikeCompany",
+                "summary": "Company add Like",
+                "description": "Company add Like"
+            },
+            "delete": {
+                "tags": [
+                    "Company"
+                ],
+                "responses": {
+                    "202": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "deleteLikeCompany",
+                "summary": "Company dislike",
+                "description": "Company dislike"
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "description": "Company UUID",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/event/{id}/like": {
+            "post": {
+                "tags": [
+                    "Event"
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "postLikeEvent",
+                "summary": "Like Event",
+                "description": "Like Event"
+            },
+            "delete": {
+                "tags": [
+                    "Event"
+                ],
+                "responses": {
+                    "202": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "deleteLikeEvent",
+                "summary": "Dislike Event",
+                "description": "Dislike Event"
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "description": "Event UUID",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/category/{id}": {
+            "get": {
+                "tags": [
+                    "Event"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CategoryDto"
+                                }
+                            }
+                        },
+                        "description": "Get Category"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "getCategoryById",
+                "summary": "Category detail",
+                "description": "Category detail"
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/event/{id}/notifications": {
+            "summary": "Get list of event Notifications",
+            "get": {
+                "tags": [
+                    "Event"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/EventNotificationListResponse"
+                    },
+                    "204": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "getEventNotificationListById",
+                "summary": "List of Event notification",
+                "description": "List of Event notification"
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/user/reward/{id}/use": {
+            "post": {
+                "tags": [
+                    "Rewards"
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/NoContentResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "postReward",
+                "summary": "User reward",
+                "description": "User reward"
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "description": "Reward UUID",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/user/reward": {
+            "get": {
+                "tags": [
+                    "Rewards"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/RewardsResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    }
+                },
+                "operationId": "getUserRewardList",
+                "summary": "Get user rewards by user ID",
+                "description": "Get all available rewards for current user"
+            }
+        },
+        "/user/reward/{id}": {
+            "get": {
+                "tags": [
+                    "Rewards"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/RewardResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/ErrorNotFoundResponse"
+                    }
+                },
+                "operationId": "getRewardByID",
+                "summary": "Get reward detail",
+                "description": "Get Reward by ID"
+            },
+            "parameters": [
+                {
+                    "name": "id",
+                    "description": "id of reward",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/qr": {
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/QrRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "Rewards"
+                ],
+                "responses": {
+                    "202": {
+                        "$ref": "#/components/responses/QrResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorForbidenResponse"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "operationId": "postQr",
+                "summary": "Use data from QR",
+                "description": "Use data from QR"
+            }
+        },
+        "/auth/signin": {
+            "summary": "Sign In user",
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthenticationRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/AuthResponse"
+                    },
+                    "400": {
+                        "description": "Invalid username/password supplied"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    }
+                },
+                "operationId": "postSignInUser",
+                "summary": "Logs user into the system",
+                "description": "Sign in user"
+            }
+        },
+        "/auth/signup": {
+            "summary": "Sign up user",
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserDto"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/AuthResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/ErrorBadRequestResponse"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/ErrorUnauthorizedResponse"
+                    }
+                },
+                "operationId": "postSignUpUser",
+                "summary": "Logs user into the system",
+                "description": "Logs user into the system"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AuthenticationRequest": {
+                "description": "Login request",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "format": "email",
+                        "description": "",
+                        "type": "string",
+                        "example": "user@mail.com"
+                    },
+                    "password": {
+                        "format": "password",
+                        "description": "",
+                        "type": "string"
+                    }
+                }
+            },
+            "AuthResponse": {
+                "description": "",
+                "required": [
+                    "token",
+                    "user"
+                ],
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "$ref": "#/components/schemas/TokenDto"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/UserDto"
+                    }
+                }
+            },
+            "FeedbackRequest": {
+                "description": "",
+                "required": [
+                    "message"
+                ],
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "description": "Users feedback message",
+                        "type": "string"
+                    },
+                    "username": {
+                        "description": "Optional username",
+                        "type": "string"
+                    }
+                },
+                "x-examples": {
+                    "example-1": {
+                        "message": "string",
+                        "username": "string"
+                    }
+                }
+            },
+            "UpdateUserRequest": {
+                "description": "Model for update user informations",
+                "required": [
+                    "firstName",
+                    "username",
+                    "lastName"
+                ],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "firstName": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "username": "some text",
+                    "firstName": "some text",
+                    "lastName": "some text"
+                }
+            },
+            "QrRequest": {
+                "description": "",
+                "required": [
+                    "companyId"
+                ],
+                "type": "object",
+                "properties": {
+                    "companyId": {
+                        "format": "uuid",
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "x-examples": {
+                    "example-1": {
+                        "companyId": "8bb73d03-06b4-47c7-80c7-59301f770eda"
+                    }
+                }
+            },
+            "QrResponse": {
+                "description": "",
+                "required": [
+                    "points"
+                ],
+                "type": "object",
+                "properties": {
+                    "points": {
+                        "description": "",
+                        "type": "number"
+                    }
+                },
+                "x-examples": {
+                    "example-1": {
+                        "points": 0
+                    }
+                }
+            },
+            "ApiErrorDto": {
+                "description": "Default error response",
+                "required": [
+                    "code"
+                ],
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "format": "int32",
+                        "description": "Error status code",
+                        "default": 400,
+                        "minimum": 200,
+                        "type": "integer",
+                        "example": 400
+                    },
+                    "message": {
+                        "description": "Error description message",
+                        "type": "string"
+                    },
+                    "invalid": {
+                        "description": "invalid fields",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/InvalidFieldDto"
+                        }
+                    }
+                },
+                "example": {
+                    "code": 400,
+                    "message": "Invalid format",
+                    "invalid": [
+                        {
+                            "field": "email",
+                            "message": "wrong format"
+                        }
+                    ]
+                }
+            },
+            "UserStatusDto": {
+                "description": "",
+                "enum": [
+                    "active",
+                    "blocked"
+                ],
+                "type": "string",
+                "example": "blocked",
+                "x-examples": {
+                    "example-1": "blocked"
+                }
+            },
+            "UserDto": {
+                "description": "User object",
+                "allOf": [
+                    {
+                        "required": [
+                            "id",
+                            "role",
+                            "email",
+                            "password",
+                            "status"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "nullable": false,
+                                "format": "uuid",
+                                "type": "string"
+                            },
+                            "role": {
+                                "$ref": "#/components/schemas/RoleDto"
+                            },
+                            "firstName": {
+                                "type": "string"
+                            },
+                            "lastName": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "format": "email",
+                                "type": "string",
+                                "example": "user@mail.com"
+                            },
+                            "password": {
+                                "format": "password",
+                                "type": "string"
+                            },
+                            "status": {
+                                "$ref": "#/components/schemas/UserStatusDto"
+                            },
+                            "username": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    }
+                ],
+                "example": {
+                    "id": "c85f8ecf-227f-418d-a867-7e0140dc51fe",
+                    "email": "sample@example.cz",
+                    "fistName": "Jan",
+                    "lastName": "Novak",
+                    "role": "user",
+                    "password": "$password1",
+                    "status": "active",
+                    "username": "johnSnow"
+                },
+                "x-examples": {
+                    "example-1": {
+                        "id": "c85f8ecf-227f-418d-a867-7e0140dc51fe",
+                        "email": "sample@example.cz",
+                        "fistName": "Jan",
+                        "lastName": "Novak",
+                        "role": "user",
+                        "password": "$password1",
+                        "status": "active",
+                        "username": "johnSnow"
+                    }
+                }
+            },
+            "TokenDto": {
+                "description": "Refresh token Response Model",
+                "required": [
+                    "accessToken",
+                    "refreshToken"
+                ],
+                "type": "object",
+                "properties": {
+                    "accessToken": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "refreshToken": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "accessToken": "c85f8ecf-227f-418d-a867-7e0140dc51fe",
+                    "refreshToken": "0bc5f3263a5eb4390242ac130002"
+                },
+                "x-examples": {
+                    "example-1": {
+                        "accessToken": "c85f8ecf-227f-418d-a867-7e0140dc51fe",
+                        "refreshToken": "0bc5f3263a5eb4390242ac130002"
+                    }
+                }
+            },
+            "SettingsDto": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "eventCategories": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryDto"
+                        }
+                    },
+                    "companyCategories": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryDto"
+                        }
+                    },
+                    "eventDistrict": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DistrictDto"
+                        }
+                    },
+                    "companyDistrict": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DistrictDto"
+                        }
+                    }
+                },
+                "x-examples": {
+                    "example-1": {
+                        "eventCategories": [
+                            {
+                                "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
+                                "name": "Category 1"
+                            }
+                        ],
+                        "companyCategories": [
+                            {
+                                "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
+                                "name": "Category 1"
+                            }
+                        ],
+                        "eventDistrict": [
+                            {
+                                "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
+                                "name": "Dubina 1"
+                            }
+                        ],
+                        "companyDistrict": [
+                            {
+                                "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
+                                "name": "Dubina 1"
+                            }
+                        ]
+                    }
+                }
+            },
+            "RoleDto": {
+                "description": "User role:\n  * `anonymous` - anonymous user not signed up\n  * `user` - registered user after sign up\n  * `company` - account with Company role\n",
+                "enum": [
+                    "anonymous",
+                    "user",
+                    "client"
+                ],
+                "type": "string",
+                "x-examples": {
+                    "example-1": "anonymous"
+                }
+            },
+            "RewardListDto": {
+                "description": "List of Rewards with Paggination",
+                "allOf": [
+                    {
+                        "required": [
+                            "items"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/RewardDto"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PagginateDto"
+                    }
+                ],
+                "x-examples": {
+                    "example-1": {
+                        "items": [
+                            {
+                                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                                "title": "string",
+                                "description": "string",
+                                "preview": {
+                                    "type": "youtube",
+                                    "original": "http://www.opensource.com"
+                                },
+                                "event": {
+
+                                },
+                                "company": {
+
+                                },
+                                "voucherCount": 0,
+                                "createdAt": "2021-04-04T21:08:46Z",
+                                "updatedAt": "2021-04-04T21:08:46Z"
+                            }
+                        ],
+                        "page": 1,
+                        "limit": 10,
+                        "total": 10
+                    }
+                }
+            },
+            "RewardDto": {
+                "description": "User rewards",
+                "allOf": [
+                    {
+                        "required": [
+                            "id",
+                            "title",
+                            "description",
+                            "voucherCount"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "format": "uuid",
+                                "description": "",
+                                "type": "string"
+                            },
+                            "title": {
+                                "description": "title",
+                                "type": "string"
+                            },
+                            "description": {
+                                "description": "Description of reward",
+                                "type": "string"
+                            },
+                            "preview": {
+                                "$ref": "#/components/schemas/MediaDto"
+                            },
+                            "event": {
+                                "$ref": "#/components/schemas/EventDto"
+                            },
+                            "company": {
+                                "$ref": "#/components/schemas/CompanyDto"
+                            },
+                            "voucherCount": {
+                                "description": "",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    }
+                ],
+                "x-examples": {
+                    "example-1": {
+                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "title": "string",
+                        "description": "string",
+                        "preview": {
+                            "type": "youtube",
+                            "original": "http://www.opensource.com"
+                        },
+                        "event": {
+
+                        },
+                        "company": {
+
+                        },
+                        "voucherCount": 0,
+                        "createdAt": "2021-04-04T21:08:46Z",
+                        "updatedAt": "2021-04-04T21:08:46Z"
+                    }
+                }
+            },
+            "PagginateDto": {
+                "discriminator": {
+                    "propertyName": "pagginate_type"
+                },
+                "description": "basic paggination object",
+                "required": [
+                    "page",
+                    "limit",
+                    "total"
+                ],
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "format": "int32",
+                        "description": "current page",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "limit": {
+                        "format": "int32",
+                        "description": "How many items will fetch",
+                        "maximum": 100,
+                        "minimum": 1,
+                        "type": "integer",
+                        "example": 20
+                    },
+                    "total": {
+                        "format": "int32",
+                        "description": "Total count of items available with this query",
+                        "type": "integer",
+                        "example": 10
+                    }
+                },
+                "example": {
+                    "page": 1,
+                    "limit": 10,
+                    "total": 10
+                },
+                "x-examples": {
+                    "example-1": {
+                        "page": 1,
+                        "limit": 10,
+                        "total": 10
+                    }
+                }
+            },
+            "NotificationListDto": {
+                "description": "",
+                "allOf": [
+                    {
+                        "required": [
+                            "items"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/NotificationDto"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PagginateDto"
+                    }
+                ],
+                "x-examples": {
+                    "example-1": {
+                        "items": [
+                            {
+                                "title": "string",
+                                "description": "string",
+                                "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                                "createdAt": "2021-04-04T21:08:46Z",
+                                "updatedAt": "2021-04-04T21:08:46Z"
+                            }
+                        ],
+                        "page": 1,
+                        "limit": 10,
+                        "total": 10
+                    }
+                }
+            },
+            "NotificationDto": {
+                "description": "",
+                "allOf": [
+                    {
+                        "required": [
+                            "title",
+                            "id"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "description": "",
+                                "type": "string"
+                            },
+                            "description": {
+                                "description": "",
+                                "type": "string"
+                            },
+                            "id": {
+                                "format": "uuid",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    }
+                ],
+                "x-examples": {
+                    "example-1": {
+                        "title": "string",
+                        "description": "string",
+                        "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+                        "createdAt": "2021-04-04T21:08:46Z",
+                        "updatedAt": "2021-04-04T21:08:46Z"
+                    }
+                }
+            },
+            "MediaTypeDto": {
+                "description": "",
+                "enum": [
+                    "image",
+                    "youtube"
+                ],
+                "type": "string",
+                "example": "youtube",
+                "x-examples": {
+                    "example-1": "youtube"
+                }
+            },
+            "MediaListDto": {
+                "description": "",
+                "allOf": [
+                    {
+                        "required": [
+                            "items"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "description": "items",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/MediaDto"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PagginateDto"
+                    }
+                ],
+                "x-examples": {
+                    "example-1": {
+                        "items": [
+                            {
+                                "type": "youtube",
+                                "original": "http://www.opensource.com"
+                            }
+                        ],
+                        "page": 1,
+                        "limit": 10,
+                        "total": 10
+                    }
+                }
+            },
+            "MediaDto": {
+                "allOf": [
+                    {
+                        "required": [
+                            "type"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "format": "uuid",
+                                "type": "string",
+                                "example": "1f4b3853-1d84-43f4-8124-9a3ab2429dbd"
+                            },
+                            "original": {
+                                "type": "string"
+                            },
+                            "small": {
+                                "type": "string"
+                            },
+                            "medium": {
+                                "type": "string"
+                            },
+                            "large": {
+                                "type": "string"
+                            },
+                            "type": {
+                                "$ref": "#/components/schemas/MediaTypeDto"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    }
+                ],
+                "xml": {
+                    "name": "Media"
+                },
+                "example": {
+                    "type": "youtube",
+                    "original": "http://www.opensource.com"
+                },
+                "x-examples": {
+
+                }
+            },
+            "LocationDto": {
+                "description": "Basic location",
+                "allOf": [
+                    {
+                        "required": [
+                            "lat",
+                            "lon",
+                            "address",
+                            "district"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "lat": {
+                                "format": "double",
+                                "description": "",
+                                "type": "number",
+                                "example": 50.209431
+                            },
+                            "lon": {
+                                "format": "double",
+                                "description": "",
+                                "type": "number",
+                                "example": 15.83263
+                            },
+                            "address": {
+                                "description": "",
+                                "type": "string"
+                            },
+                            "district": {
+                                "$ref": "#/components/schemas/DistrictDto"
+                            },
+                            "id": {
+                                "format": "uuid",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    }
+                ],
+                "example": {
+                    "address": "Sample addres, hradec kralove, kosmonautu",
+                    "district": {
+                        "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
+                        "name": "District 1"
+                    },
+                    "lat": 50.2,
+                    "lon": 14.5
+                },
+                "x-examples": {
+                    "example-1": {
+                        "address": "Sample addres, hradec kralove, kosmonautu",
+                        "district": {
+                            "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
+                            "name": "District 1"
+                        },
+                        "lat": 50.2,
+                        "lon": 14.5
+                    }
+                }
+            },
+            "InvalidFieldDto": {
+                "description": "",
+                "required": [
+                    "field"
+                ],
+                "type": "object",
+                "properties": {
+                    "field": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "message": {
+                        "description": "Error message for invalid field",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "field": "some text",
+                    "message": "some text"
+                }
+            },
+            "EventListDto": {
+                "description": "",
+                "allOf": [
+                    {
+                        "required": [
+                            "items"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/EventDto"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PagginateDto"
+                    }
+                ],
+                "example": {
+
+                },
+                "x-examples": {
+
+                }
+            },
+            "EventDto": {
+                "allOf": [
+                    {
+                        "required": [
+                            "startAt",
+                            "endAt",
+                            "categories",
+                            "name"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "nullable": false,
+                                "format": "uuid",
+                                "description": "Unique ID\n",
+                                "type": "string",
+                                "example": "89466c31-4676-4fa7-853e-f65d16e7eb8c"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "startAt": {
+                                "format": "date-time",
+                                "type": "string"
+                            },
+                            "endAt": {
+                                "format": "date-time",
+                                "type": "string"
+                            },
+                            "categories": {
+                                "description": "Event categories",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/CategoryDto"
+                                }
+                            },
+                            "preview": {
+                                "$ref": "#/components/schemas/MediaDto"
+                            },
+                            "gallery": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/MediaDto"
+                                }
+                            },
+                            "location": {
+                                "$ref": "#/components/schemas/LocationDto"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "liked": {
+                                "description": "",
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    }
+                ],
+                "xml": {
+                    "name": "Event"
+                },
+                "example": {
+
+                },
+                "x-examples": {
+
+                }
+            },
+            "DistrictDto": {
+                "description": "",
+                "allOf": [
+                    {
+                        "required": [
+                            "id",
+                            "name"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "format": "uuid",
+                                "description": "",
+                                "type": "string",
+                                "example": "89466c31-4676-4fa7-853e-f65d16e7eb8c"
+                            },
+                            "name": {
+                                "description": "",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    }
+                ],
+                "example": {
+                    "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
+                    "name": "Dubina 1"
+                }
+            },
+            "CompanyListDto": {
+                "description": "",
+                "allOf": [
+                    {
+                        "required": [
+                            "items"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "items": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/CompanyDto"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "#/components/schemas/PagginateDto"
+                    }
+                ]
+            },
+            "CompanyDto": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "location",
+                            "categories"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "nullable": false,
+                                "format": "uuid",
+                                "type": "string",
+                                "example": "89466c31-4676-4fa7-853e-f65d16e7eb8c"
+                            },
+                            "name": {
+                                "nullable": true,
+                                "type": "string"
+                            },
+                            "location": {
+                                "$ref": "#/components/schemas/LocationDto"
+                            },
+                            "categories": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/CategoryDto"
+                                }
+                            },
+                            "logo": {
+                                "$ref": "#/components/schemas/MediaDto"
+                            },
+                            "gallery": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/MediaDto"
+                                }
+                            },
+                            "liked": {
+                                "description": "",
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                ],
+                "xml": {
+                    "name": "Company"
+                },
+                "example": {
+
+                }
+            },
+            "CategoryDto": {
+                "description": "Category",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BaseObjectDto"
+                    },
+                    {
+                        "required": [
+                            "id",
+                            "name"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "nullable": false,
+                                "format": "uuid",
+                                "type": "string",
+                                "example": "89466c31-4676-4fa7-853e-f65d16e7eb8c"
+                            },
+                            "name": {
+                                "nullable": false,
+                                "type": "string"
+                            }
+                        }
+                    }
+                ],
+                "xml": {
+                    "name": "Category"
+                },
+                "example": {
+                    "id": "0bc5f326-73a5-11eb-9439-0242ac130002",
+                    "name": "Category 1"
+                }
+            },
+            "BaseObjectDto": {
+                "discriminator": {
+                    "propertyName": "base_type"
+                },
+                "description": "Abstract model for all models in project",
+                "required": [
+                    "createdAt"
+                ],
+                "type": "object",
+                "properties": {
+                    "createdAt": {
+                        "format": "date-time",
+                        "description": "Date when was object created",
+                        "type": "string",
+                        "example": "2021-04-04T21:08:46Z"
+                    },
+                    "updatedAt": {
+                        "format": "date-time",
+                        "description": "Last date when was object updated",
+                        "type": "string",
+                        "example": "2021-04-04T21:08:46Z"
+                    }
+                },
+                "x-examples": {
+                    "example-1": {
+                        "createdAt": "2021-04-04T21:08:46Z",
+                        "updatedAt": "2021-04-04T21:08:46Z"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "EventsResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/EventListDto"
+                        }
+                    }
+                },
+                "description": "Successfull response with list of events"
+            },
+            "RewardsResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/RewardListDto"
+                        }
+                    }
+                },
+                "description": "List of Rewards"
+            },
+            "ErrorUnauthorizedResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiErrorDto"
+                        }
+                    }
+                },
+                "description": "Unauthorized"
+            },
+            "ErrorBadRequestResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiErrorDto"
+                        }
+                    }
+                },
+                "description": "Bad request"
+            },
+            "ErrorNotFoundResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiErrorDto"
+                        }
+                    }
+                },
+                "description": "Not Found"
+            },
+            "NoContentResponse": {
+                "description": "Response with no content"
+            },
+            "UserResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/UserDto"
+                        }
+                    }
+                },
+                "description": "User response"
+            },
+            "EventResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/EventDto"
+                        }
+                    }
+                },
+                "description": "Event response"
+            },
+            "EventRequest": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/EventDto"
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "AuthResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/AuthResponse"
+                        }
+                    }
+                },
+                "description": "Authorization response"
+            },
+            "MediaListResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/MediaListDto"
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "EventNotificationListResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/NotificationListDto"
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "RewardResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/RewardDto"
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "SettingsResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/SettingsDto"
+                        }
+                    }
+                },
+                "description": "Settings response"
+            },
+            "QrResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/QrResponse"
+                        }
+                    }
+                },
+                "description": ""
+            },
+            "CompanyListResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/CompanyListDto"
+                        }
+                    }
+                },
+                "description": "List of companies"
+            },
+            "ErrorForbidenResponse": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ApiErrorDto"
+                        }
+                    }
+                },
+                "description": "Error Forbiden"
+            }
+        },
+        "parameters": {
+            "offsetParam": {
+                "name": "offset",
+                "description": "Number of items to skip before returning the results.",
+                "schema": {
+                    "format": "int32",
+                    "default": 0,
+                    "minimum": 0,
+                    "type": "integer"
+                },
+                "in": "query",
+                "required": false
+            },
+            "limitParam": {
+                "name": "limit",
+                "description": "Maximum number of items to return.",
+                "schema": {
+                    "format": "int32",
+                    "default": 20,
+                    "maximum": 100,
+                    "minimum": 1,
+                    "type": "integer"
+                },
+                "in": "query"
+            }
+        },
+        "securitySchemes": {
+            "bearer": {
+                "scheme": "bearer",
+                "type": "http"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": [
+            ]
+        }
+    ],
+    "tags": [
+        {
+            "name": "Event",
+            "description": "Everything about your Events",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": "http://swagger.io"
+            }
+        },
+        {
+            "name": "Company",
+            "description": "Everything about Company",
+            "externalDocs": {
+                "description": "Find out more",
+                "url": "http://swagger.io"
+            }
+        },
+        {
+            "name": "User",
+            "description": "Operations about user",
+            "externalDocs": {
+                "description": "Find out more about our store",
+                "url": "http://swagger.io"
+            }
+        },
+        {
+            "name": "User relations",
+            "description": "Operations about user relations",
+            "externalDocs": {
+                "description": "Find out more about our store",
+                "url": "http://swagger.io"
+            }
+        },
+        {
+            "name": "Rewards",
+            "description": "Rewards operations"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth operations"
+        }
+    ]
+}
